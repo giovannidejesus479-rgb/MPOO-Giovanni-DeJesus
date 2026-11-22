@@ -14,34 +14,32 @@ class Result {
      * The function is expected to return a STRING.
      * The function accepts STRING datos as parameter.
      */
-     
-     public static String comprimir(String datos) {
-    if (datos == null || datos.isEmpty()) {
-        return "";
-    }
-
-    datos = datos.toUpperCase();
-
-    StringBuilder resultado = new StringBuilder();
-    int contador = 1;
-
-    for (int i = 0; i < datos.length(); i++) {
-        if (i + 1 < datos.length() && datos.charAt(i) == datos.charAt(i + 1)) {
-            contador++;
-        } else {
-            
-            while (contador > 9) {
-                resultado.append(9).append(datos.charAt(i));
-                contador -= 9;
-            }
-            resultado.append(contador).append(datos.charAt(i));
-            contador = 1;
+    public static String comprimir(String datos) {
+        if (datos == null || datos.isEmpty()) { // validar en caso de entrada nula o vacia
+            return "";
         }
+
+        datos = datos.toUpperCase(); // convierte la cadena en mayusculas
+
+        StringBuilder resultado = new StringBuilder();
+        int contador = 1;
+
+        for (int i = 0; i < datos.length(); i++) { // recorre la cadena caracter por caracter
+            if (i + 1 < datos.length() && datos.charAt(i) == datos.charAt(i + 1)) {
+                contador++;
+            } else { // evita que el bloque supere 9
+                while (contador > 9) {
+                    resultado.append(9).append(datos.charAt(i));
+                    contador -= 9;
+                }
+
+                resultado.append(contador).append(datos.charAt(i)); // concatena el bloque (numero y letra)
+                contador = 1; // reinicia el contador para el siguiente bloque
+            }
+        }
+
+        return resultado.toString();
     }
-
-    return resultado.toString();
-}
-
 }
 
 public class RLE {
