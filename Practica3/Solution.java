@@ -14,59 +14,47 @@ class Result {
      * The function is expected to return an INTEGER.
      * The function accepts INTEGER_ARRAY array as parameter.
      */
-     
-     public static int longestPeak(int[] array) {
-    int longestPeakLength = 0;
-    int i = 1;
+    public static int longestPeak(int[] array) {
+        int longestPeakLength = 0;
+        int i = 1;
 
-    while (i < array.length - 1) {
+        while (i < array.length - 1) {
+            boolean isPeak = (array[i] - array[i - 1] > 1) && (array[i] > array[i + 1]);
 
-        boolean isPeak = (array[i] - array[i - 1] > 1) && (array[i] > array[i + 1]);
+            if (!isPeak) {
+                i++;
+                continue;
+            }
 
-        if (!isPeak) {
-            i++;
-            continue;
+            int leftIdx = i - 2;
+            while (leftIdx >= 0 && (array[leftIdx + 1] - array[leftIdx] > 1)) {
+                leftIdx--;
+            }
+
+            int rightIdx = i + 2;
+            while (rightIdx < array.length && array[rightIdx] < array[rightIdx - 1]) {
+                rightIdx++;
+            }
+
+            int currentPeakLenght = rightIdx - leftIdx - 1;
+            longestPeakLength = Math.max(longestPeakLength, currentPeakLenght);
+
+            i = rightIdx;
         }
 
-        int leftIdx = i - 2;
-        while (leftIdx >= 0 && (array[leftIdx + 1] - array[leftIdx] > 1)) {
-            leftIdx--;
-        }
-
-        int rightIdx = i + 2;
-        while (rightIdx < array.length && array[rightIdx] < array[rightIdx - 1]) {
-            rightIdx++;
-        }
-
-        int currentPeakLength = rightIdx - leftIdx - 1;
-        longestPeakLength = Math.max(longestPeakLength, currentPeakLength);
-
-        i = rightIdx;
+        return longestPeakLength;
     }
-
-    return longestPeakLength;
-}
-
 }
 
 public class Solution {
-
     public static void main(String[] args) throws IOException {
-
-        BufferedReader bufferedReader =
-                new BufferedReader(new InputStreamReader(System.in));
-
-        BufferedWriter bufferedWriter =
-                new BufferedWriter(
-                        new FileWriter(System.getenv("OUTPUT_PATH"))
-                );
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
 
         String line = bufferedReader.readLine();
-
         String[] values = line.trim().split("\\s+");
 
         int[] array = new int[values.length];
-
         for (int i = 0; i < values.length; i++) {
             array[i] = Integer.parseInt(values[i]);
         }
